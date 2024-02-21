@@ -1,0 +1,494 @@
+---
+title: "Data Perspectives"
+author: "Dr. Garrett Saunders PhD"
+format: revealjs
+---
+
+
+
+## Information {transition="slide"}
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(xkcd)
+library(gridExtra)
+```
+
+Oxford: "what is conveyed or represented by a particular arrangement or sequence of things."
+
+```{r, fig.height=6, fig.width=12}
+set.seed(3)
+datascaled <- data.frame(x=c(-3,9),y=c(-30,30))
+dots <- data.frame(x=seq(1, 9, l=10), y=runif(10, 1,20)+seq(.1,10,l=10))
+p <- ggplot(data=datascaled, aes(x=x,y=y)) + geom_point(color="white") + 
+  geom_line(data=dots, mapping=aes(x=x, y=y), size=4, color="steelblue")
+xrange <- range(datascaled$x/2)
+yrange <- range(datascaled$y)
+ratioxy <- diff(xrange) / diff(yrange)
+ 
+mapping <- aes(x=x,
+               y=y,
+               scale=scale,
+               ratioxy=ratioxy,
+               angleofspine = angleofspine,
+               anglerighthumerus = anglerighthumerus,
+               anglelefthumerus = anglelefthumerus,
+               anglerightradius = anglerightradius,
+               angleleftradius = angleleftradius,
+               anglerightleg =  anglerightleg,
+               angleleftleg = angleleftleg,
+               angleofneck = angleofneck )
+ 
+dataman <- data.frame( x= -2, y=10,
+                  scale = 10,
+                  ratioxy = ratioxy,
+                  angleofspine =  -pi/2.1 ,
+                  anglerighthumerus = -pi/6,
+                  anglelefthumerus = pi + pi/6,
+                  anglerightradius = 0,
+                  angleleftradius = - pi/4,
+                  angleleftleg = 3*pi/2  + pi / 12 ,
+                  anglerightleg = 3*pi/2  - pi / 12,
+                  angleofneck = 3 * pi / 2 + pi/10)
+
+
+p + xkcdman(mapping,dataman) + theme_void()
+
+
+```
+
+
+
+## Daily Step Counts
+
+Works for a few days...
+<br/>
+
+```{r, fig.height=6, fig.width=12}
+set.seed(3)
+datascaled <- data.frame(x=c(-3,9),y=c(-30,30))
+
+p <- ggplot(data=datascaled, aes(x=x,y=y)) + geom_point(color="white") + 
+  geom_line(data=dots, mapping=aes(x=x, y=y), size=4, color="steelblue") + 
+  geom_bar(data=dots, mapping=aes(x=x, y=y), stat="identity", alpha=0.3) + 
+  geom_text(data=dots, mapping=aes(x=x, y=rep(-2,10), label=c("M","T","W","T","F","S","S","M","T","W")))
+xrange <- range(datascaled$x/2)
+yrange <- range(datascaled$y)
+ratioxy <- diff(xrange) / diff(yrange)
+ 
+mapping <- aes(x=x,
+               y=y,
+               scale=scale,
+               ratioxy=ratioxy,
+               angleofspine = angleofspine,
+               anglerighthumerus = anglerighthumerus,
+               anglelefthumerus = anglelefthumerus,
+               anglerightradius = anglerightradius,
+               angleleftradius = angleleftradius,
+               anglerightleg =  anglerightleg,
+               angleleftleg = angleleftleg,
+               angleofneck = angleofneck )
+ 
+dataman <- data.frame( x= -2, y=10,
+                  scale = 10,
+                  ratioxy = ratioxy,
+                  angleofspine =  -pi/2.1 ,
+                  anglerighthumerus = -pi/6,
+                  anglelefthumerus = pi + pi/6,
+                  anglerightradius = 0,
+                  angleleftradius = - pi/4,
+                  angleleftleg = 3*pi/2  + pi / 12 ,
+                  anglerightleg = 3*pi/2  - pi / 12,
+                  angleofneck = 3 * pi / 2 + pi/10)
+
+
+p + xkcdman(mapping,dataman) + theme_void()
+
+
+```
+
+
+
+## Daily Step Counts
+
+...but what about more?
+<br/>
+
+```{r, fig.height=6, fig.width=12}
+set.seed(3)
+n <- 80
+datascaled <- data.frame(x=c(-3,9),y=c(-30,30))
+dots <- data.frame(x=seq(1, 9, l=n), y=rnorm(n, 12,4))
+p <- ggplot(data=datascaled, aes(x=x,y=y)) + geom_point(color="white") + 
+  geom_line(data=dots, mapping=aes(x=x, y=y), size=4, color="steelblue") + 
+  geom_bar(data=dots, mapping=aes(x=x, y=y), stat="identity", alpha=0.3) +
+  geom_text(data=dots, mapping=aes(x=x, y=rep(-2,n), label=rep(c("M","T","W","T","F","S","S"), length.out=n)), size=3)
+xrange <- range(datascaled$x/2)
+yrange <- range(datascaled$y)
+ratioxy <- diff(xrange) / diff(yrange)
+ 
+mapping <- aes(x=x,
+               y=y,
+               scale=scale,
+               ratioxy=ratioxy,
+               angleofspine = angleofspine,
+               anglerighthumerus = anglerighthumerus,
+               anglelefthumerus = anglelefthumerus,
+               anglerightradius = anglerightradius,
+               angleleftradius = angleleftradius,
+               anglerightleg =  anglerightleg,
+               angleleftleg = angleleftleg,
+               angleofneck = angleofneck )
+ 
+dataman <- data.frame( x= -2, y=10,
+                  scale = 10,
+                  ratioxy = ratioxy,
+                  angleofspine =  -pi/2.1 ,
+                  anglerighthumerus = -pi/6,
+                  anglelefthumerus = pi + pi/6,
+                  anglerightradius = 0,
+                  angleleftradius = - pi/4,
+                  angleleftleg = 3*pi/2  + pi / 12 ,
+                  anglerightleg = 3*pi/2  - pi / 12,
+                  angleofneck = 3 * pi / 2 + pi/10)
+
+
+p + xkcdman(mapping,dataman) + theme_void()
+
+
+```
+
+
+
+
+## Daily Step Counts
+
+Let's change our perspective.
+<br>
+
+```{r divide, fig.height=6, fig.width=12, warning=FALSE, message=FALSE}
+set.seed(3)
+n <- 80
+breaks <- data.frame(x1=1, x2=9, y=seq(0,25,2.5))
+datascaled <- data.frame(x=c(-3,9),y=c(-30,30))
+datatext <- data.frame(x=c(1.7, 3, 4.2), y=c(28,28,28), labels=c("Divide.", "Tally.", "Draw."))
+p <- ggplot(data=datascaled, aes(x=x,y=y)) + geom_point(color="white") + 
+  geom_line(data=dots, mapping=aes(x=x, y=y), size=4, color="steelblue") + 
+  geom_bar(data=dots, mapping=aes(x=x, y=y), stat="identity", alpha=0.3) +
+  geom_text(data=dots, mapping=aes(x=x, y=rep(-2,n), label=rep(c("M","T","W","T","F","S","S"), length.out=n)), size=3) + 
+  geom_text(data=datatext, mapping=aes(x=x,y=y, label=labels), color=c("steelblue","gray","gray"), size=10) + 
+    geom_segment(data=breaks, mapping=aes(x=x1, xend=x2, y=y, yend=y), color="#b4af46", alpha=0.5)
+
+xrange <- range(datascaled$x/2)
+yrange <- range(datascaled$y)
+ratioxy <- diff(xrange) / diff(yrange)
+ 
+mapping <- aes(x=x,
+               y=y,
+               scale=scale,
+               ratioxy=ratioxy,
+               angleofspine = angleofspine,
+               anglerighthumerus = anglerighthumerus,
+               anglelefthumerus = anglelefthumerus,
+               anglerightradius = anglerightradius,
+               angleleftradius = angleleftradius,
+               anglerightleg =  anglerightleg,
+               angleleftleg = angleleftleg,
+               angleofneck = angleofneck )
+ 
+dataman <- data.frame( x= -2, y=10,
+                  scale = 10,
+                  ratioxy = ratioxy,
+                  angleofspine =  -pi/2.1 ,
+                  anglerighthumerus = -pi/6,
+                  anglelefthumerus = pi + pi/6,
+                  anglerightradius = 0,
+                  angleleftradius = - pi/4,
+                  angleleftleg = 3*pi/2  + pi / 12 ,
+                  anglerightleg = 3*pi/2  - pi / 12,
+                  angleofneck = 3 * pi / 2 + pi/10)
+
+
+p + xkcdman(mapping,dataman) + theme_void()
+
+
+```
+
+
+## Daily Step Counts
+
+Let's change our perspective.
+<br>
+
+```{r tally, fig.height=6, fig.width=12, warning=FALSE, message=FALSE}
+set.seed(3)
+n <- 80
+breaks <- data.frame(x1=1, x2=9, y=seq(0,25,2.5))
+datascaled <- data.frame(x=c(-3,9),y=c(-30,30))
+datatext <- data.frame(x=c(1.7, 3, 4.2), y=c(28,28,28), labels=c("Divide.", "Tally.", "Draw."))
+tally <- data.frame(x=0.5, y=seq(1.25,23.75, 2.5), count=table(cut(dots$y, seq(0,25,2.5))))
+p <- ggplot(data=datascaled, aes(x=x,y=y)) + geom_point(color="white") + 
+  geom_line(data=dots, mapping=aes(x=x, y=y), size=4, color="steelblue") + 
+  geom_bar(data=dots, mapping=aes(x=x, y=y), stat="identity", alpha=0.3) +
+  geom_text(data=dots, mapping=aes(x=x, y=rep(-2,n), label=rep(c("M","T","W","T","F","S","S"), length.out=n)), size=3) + 
+  geom_text(data=datatext, mapping=aes(x=x,y=y, label=labels), color=c("gray","steelblue","gray"), size=10) + 
+    geom_segment(data=breaks, mapping=aes(x=x1, xend=x2, y=y, yend=y), color="#b4af46", alpha=0.5) + 
+  geom_text(data=tally, mapping=aes(x=x, y=y, label=count.Freq), size=6, color="#b4af46")
+
+xrange <- range(datascaled$x/2)
+yrange <- range(datascaled$y)
+ratioxy <- diff(xrange) / diff(yrange)
+ 
+mapping <- aes(x=x,
+               y=y,
+               scale=scale,
+               ratioxy=ratioxy,
+               angleofspine = angleofspine,
+               anglerighthumerus = anglerighthumerus,
+               anglelefthumerus = anglelefthumerus,
+               anglerightradius = anglerightradius,
+               angleleftradius = angleleftradius,
+               anglerightleg =  anglerightleg,
+               angleleftleg = angleleftleg,
+               angleofneck = angleofneck )
+ 
+dataman <- data.frame( x= -2, y=10,
+                  scale = 10,
+                  ratioxy = ratioxy,
+                  angleofspine =  -pi/2.1 ,
+                  anglerighthumerus = -pi/12,
+                  anglelefthumerus = pi + pi/6,
+                  anglerightradius = 0,
+                  angleleftradius = - pi/4,
+                  angleleftleg = 3*pi/2  + pi / 12 ,
+                  anglerightleg = 3*pi/2  - pi / 12,
+                  angleofneck = 3 * pi / 2 + pi/10)
+
+
+p + xkcdman(mapping,dataman) + theme_void()
+
+
+
+
+```
+
+
+
+## Daily Step Counts
+
+Let's change our perspective.
+<br>
+
+```{r draw, fig.height=6, fig.width=12, warning=FALSE, message=FALSE}
+set.seed(3)
+myscale <- 5
+n <- 80
+breaks <- data.frame(x1=1, x2=9, y=seq(0,25,2.5))
+datascaled <- data.frame(x=c(-3,9),y=c(-30,30))
+datatext <- data.frame(x=c(1.7, 3, 4.2), y=c(28,28,28), labels=c("Divide.", "Tally.", "Draw."))
+tally <- data.frame(x=0.5, y=seq(1.25,23.75, 2.5), count=table(cut(dots$y, seq(0,25,2.5))))
+p <- ggplot(data=datascaled, aes(x=x,y=y)) + geom_point(color="white") + 
+  geom_line(data=dots, mapping=aes(x=x, y=y), size=4, color="steelblue", alpha=0.2) + 
+  geom_bar(data=dots, mapping=aes(x=x, y=y), stat="identity", alpha=0.3) +
+  geom_text(data=dots, mapping=aes(x=x, y=rep(-2,n), label=rep(c("M","T","W","T","F","S","S"), length.out=n)), size=3) + 
+  geom_text(data=datatext, mapping=aes(x=x,y=y, label=labels), color=c("gray","gray","steelblue"), size=10) + 
+    geom_segment(data=breaks, mapping=aes(x=x1, xend=x2, y=y, yend=y), color="#b4af46", alpha=0.5) + 
+  geom_text(data=tally, mapping=aes(x=x, y=y, label=count.Freq), size=6, color="#b4af46") + 
+  geom_rect(aes(xmin=1, xmax=1 + 1/myscale, ymin=17.5, ymax=20), alpha=0.5, fill="#b47746", color="#2a4f6e") + 
+  geom_rect(aes(xmin=1, xmax=1 + 18/myscale, ymin=15, ymax=17.5), alpha=0.5, fill="#b47746", color="#2a4f6e") + 
+  geom_rect(aes(xmin=1, xmax=1 + 20/myscale, ymin=12.5, ymax=15), alpha=0.5, fill="#b47746", color="#2a4f6e") +
+  geom_rect(aes(xmin=1, xmax=1 + 17/myscale, ymin=10, ymax=12.5), alpha=0.5, fill="#b47746", color="#2a4f6e") + 
+  geom_rect(aes(xmin=1, xmax=1 + 15/myscale, ymin=7.5, ymax=10), alpha=0.5, fill="#b47746", color="#2a4f6e") + 
+  geom_rect(aes(xmin=1, xmax=1 + 8/myscale, ymin=5, ymax=7.5), alpha=0.5, fill="#b47746", color="#2a4f6e") + 
+  geom_rect(aes(xmin=1, xmax=1 + 1/myscale, ymin=2.5, ymax=5), alpha=0.5, fill="#b47746", color="#2a4f6e") 
+
+xrange <- range(datascaled$x/2)
+yrange <- range(datascaled$y)
+ratioxy <- diff(xrange) / diff(yrange)
+ 
+mapping <- aes(x=x,
+               y=y,
+               scale=scale,
+               ratioxy=ratioxy,
+               angleofspine = angleofspine,
+               anglerighthumerus = anglerighthumerus,
+               anglelefthumerus = anglelefthumerus,
+               anglerightradius = anglerightradius,
+               angleleftradius = angleleftradius,
+               anglerightleg =  anglerightleg,
+               angleleftleg = angleleftleg,
+               angleofneck = angleofneck )
+ 
+dataman <- data.frame( x= -2, y=10,
+                  scale = 10,
+                  ratioxy = ratioxy,
+                  angleofspine =  -pi/2.1 ,
+                  anglerighthumerus = 0,
+                  anglelefthumerus = pi + pi/6,
+                  anglerightradius = 0.1,
+                  angleleftradius = - pi/5,
+                  angleleftleg = 3*pi/2  + pi / 12 ,
+                  anglerightleg = 3*pi/2  - pi / 12,
+                  angleofneck = 3 * pi / 2 + pi/10)
+
+
+p + xkcdman(mapping,dataman) + theme_void()
+
+
+
+
+```
+
+
+## Daily Step Count Frequencies
+
+Enter Histogram.
+<br>
+
+```{r hist, fig.height=6, fig.width=12, warning=FALSE, message=FALSE}
+set.seed(3)
+myscale <- 2.22
+n <- 80
+breaks <- data.frame(x1=1, x2=9, y=seq(0,25,2.5))
+datascaled <- data.frame(x=c(-3,9),y=c(-30,30))
+datatext <- data.frame(x=c(1.7, 3, 4.2), y=c(28,28,28), labels=c("Divide.", "Tally.", "Draw."))
+tally <- data.frame(x=0.5, y=seq(1.25,23.75, 2.5), count=table(cut(dots$y, seq(0,25,2.5))))
+axistext <- data.frame(x=seq(0,20,2.5)/myscale, y=rep(-2, 9), label=paste0(floor(seq(0,20,2.5)),c("",",500",",000",",500",",000",",500",",000",",500",",000")))
+axistics <- data.frame(x=seq(0,20, 2.5))
+p <- ggplot(data=datascaled, aes(x=x,y=y)) + geom_point(color="white") + 
+    geom_segment(data=axistics, mapping=aes(y=x, yend=x, x=-.1, xend=9), color="gray") + 
+  geom_rect(aes(ymin=0, ymax=1, xmin=17.5/myscale, xmax=20/myscale), alpha=0.5, fill="#b47746", color="#2a4f6e") + 
+  geom_rect(aes(ymin=0, ymax=18, xmin=15/myscale, xmax=17.5/myscale), alpha=0.5, fill="#b47746", color="#2a4f6e") + 
+  geom_rect(aes(ymin=0, ymax=20, xmin=12.5/myscale, xmax=15/myscale), alpha=0.5, fill="#b47746", color="#2a4f6e") +
+  geom_rect(aes(ymin=0, ymax=17, xmin=10/myscale, xmax=12.5/myscale), alpha=0.5, fill="#b47746", color="#2a4f6e") + 
+  geom_rect(aes(ymin=0, ymax=15, xmin=7.5/myscale, xmax=10/myscale), alpha=0.5, fill="#b47746", color="#2a4f6e") + 
+  geom_rect(aes(ymin=0, ymax=8, xmin=5/myscale, xmax=7.5/myscale), alpha=0.5, fill="#b47746", color="#2a4f6e") + 
+  geom_rect(aes(ymin=0, ymax=1, xmin=2.5/myscale, xmax=5/myscale), alpha=0.5, fill="#b47746", color="#2a4f6e") +
+  geom_rect(aes(ymin=0, ymax=0, xmin=0/myscale, xmax=2.5/myscale), alpha=0.5, fill="#b47746", color="#2a4f6e") +
+  geom_segment(data=axistics, mapping=aes(x=x/myscale, xend=x/myscale, y=-0.8, yend=0)) + 
+  geom_text(data=axistext, mapping=aes(x=x, y=y, label=label)) + 
+  geom_segment(aes(x=0, xend=0, y=0, yend=20)) + 
+  geom_text(data=axistics, mapping=aes(x=-0.1, y=x, label=x), hjust=1, color=rep(c("black","white"), length.out=9)) +
+  geom_text(x=5, y=-5, label="Daily Step Counts") + 
+  geom_text(x=-0.4, y=10, label="Number of Days", angle=90) 
+
+
+xrange <- range(datascaled$x/2)
+yrange <- range(datascaled$y)
+ratioxy <- diff(xrange) / diff(yrange)
+ 
+mapping <- aes(x=x,
+               y=y,
+               scale=scale,
+               ratioxy=ratioxy,
+               angleofspine = angleofspine,
+               anglerighthumerus = anglerighthumerus,
+               anglelefthumerus = anglelefthumerus,
+               anglerightradius = anglerightradius,
+               angleleftradius = angleleftradius,
+               anglerightleg =  anglerightleg,
+               angleleftleg = angleleftleg,
+               angleofneck = angleofneck )
+ 
+dataman <- data.frame( x= -2.2, y=10,
+                  scale = 10,
+                  ratioxy = ratioxy,
+                  angleofspine =  -pi/2.3,
+                  anglerighthumerus = -pi/12,
+                  anglelefthumerus = pi + pi/6,
+                  anglerightradius = 0.2,
+                  angleleftradius = - pi/5,
+                  angleleftleg = 3*pi/2  + pi / 12 ,
+                  anglerightleg = 3*pi/2  - pi / 12,
+                  angleofneck = 3 * pi / 2 + pi/10)
+
+
+p + xkcdman(mapping,dataman) + theme_void()
+
+
+
+
+```
+
+
+## Daily Step Count Frequencies
+
+Enter Histogram. Enter Boxplot.
+<br>
+
+```{r boxplot, fig.height=6, fig.width=12, warning=FALSE, message=FALSE}
+set.seed(3)
+myscale <- 2.22
+myfive <- data.frame(values=as.numeric(summary(dots$y)[-4])/myscale, label=c("Min","Q1", "Median", "Q3", "Max"))
+n <- 80
+breaks <- data.frame(x1=1, x2=9, y=seq(0,25,2.5))
+datascaled <- data.frame(x=c(-3,9),y=c(-30,30))
+datatext <- data.frame(x=c(1.7, 3, 4.2), y=c(28,28,28), labels=c("Divide.", "Tally.", "Draw."))
+tally <- data.frame(x=0.5, y=seq(1.25,23.75, 2.5), count=table(cut(dots$y, seq(0,25,2.5))))
+axistext <- data.frame(x=seq(0,20,2.5)/myscale, y=rep(-2, 9), label=paste0(floor(seq(0,20,2.5)),c("",",500",",000",",500",",000",",500",",000",",500",",000")))
+axistics <- data.frame(x=seq(0,20, 2.5))
+p <- ggplot(data=datascaled, aes(x=x,y=y)) + geom_point(color="white") + 
+    geom_segment(data=axistics, mapping=aes(y=x, yend=x, x=-.1, xend=9), color="gray") + 
+  geom_rect(aes(ymin=0, ymax=1, xmin=17.5/myscale, xmax=20/myscale), alpha=0.5, fill="#b47746", color="#2a4f6e") + 
+  geom_rect(aes(ymin=0, ymax=18, xmin=15/myscale, xmax=17.5/myscale), alpha=0.5, fill="#b47746", color="#2a4f6e") + 
+  geom_rect(aes(ymin=0, ymax=20, xmin=12.5/myscale, xmax=15/myscale), alpha=0.5, fill="#b47746", color="#2a4f6e") +
+  geom_rect(aes(ymin=0, ymax=17, xmin=10/myscale, xmax=12.5/myscale), alpha=0.5, fill="#b47746", color="#2a4f6e") + 
+  geom_rect(aes(ymin=0, ymax=15, xmin=7.5/myscale, xmax=10/myscale), alpha=0.5, fill="#b47746", color="#2a4f6e") + 
+  geom_rect(aes(ymin=0, ymax=8, xmin=5/myscale, xmax=7.5/myscale), alpha=0.5, fill="#b47746", color="#2a4f6e") + 
+  geom_rect(aes(ymin=0, ymax=1, xmin=2.5/myscale, xmax=5/myscale), alpha=0.5, fill="#b47746", color="#2a4f6e") +
+  geom_rect(aes(ymin=0, ymax=0, xmin=0/myscale, xmax=2.5/myscale), alpha=0.5, fill="#b47746", color="#2a4f6e") +
+  geom_segment(data=axistics, mapping=aes(x=x/myscale, xend=x/myscale, y=-0.8, yend=0)) + 
+  geom_text(data=axistext, mapping=aes(x=x, y=y, label=label)) + 
+  geom_segment(aes(x=0, xend=0, y=0, yend=20)) + 
+  geom_text(data=axistics, mapping=aes(x=-0.1, y=x, label=x), hjust=1, color=rep(c("black","white"), length.out=9)) +
+  geom_text(x=5, y=-5, label="Daily Step Counts") + 
+  geom_text(x=-0.4, y=10, label="Number of Days", angle=90) +
+  geom_segment(data=myfive, mapping=aes(x=values, xend=values, y=-12,yend=-8)) + 
+  geom_segment(aes(x=myfive$values[1], xend=myfive$values[2], y=-10, yend=-10)) + 
+  geom_segment(aes(x=myfive$values[4], xend=myfive$values[5], y=-10, yend=-10)) + 
+  geom_rect(aes(xmin=myfive$values[2], xmax=myfive$values[4], ymin=-12, ymax=-8), fill="#b47746", color="#2a4f6e", alpha=0.5) + 
+  geom_point(aes(x=mean(dots$y)/myscale, y=-10), pch=4, size=4) + 
+  geom_text(data=myfive, mapping=aes(x=values, y=-14, label=label), size=4) +
+  geom_text(aes(x=mean(dots$y)/myscale, y=-16), size=4, label="Mean")
+
+
+
+
+xrange <- range(datascaled$x/2)
+yrange <- range(datascaled$y)
+ratioxy <- diff(xrange) / diff(yrange)
+ 
+mapping <- aes(x=x,
+               y=y,
+               scale=scale,
+               ratioxy=ratioxy,
+               angleofspine = angleofspine,
+               anglerighthumerus = anglerighthumerus,
+               anglelefthumerus = anglelefthumerus,
+               anglerightradius = anglerightradius,
+               angleleftradius = angleleftradius,
+               anglerightleg =  anglerightleg,
+               angleleftleg = angleleftleg,
+               angleofneck = angleofneck )
+ 
+dataman <- data.frame( x= -2.5, y=10,
+                  scale = 10,
+                  ratioxy = ratioxy,
+                  angleofspine =  -pi/2,
+                  anglerighthumerus = -pi/12,
+                  anglelefthumerus = pi + pi/6,
+                  anglerightradius = -0.2,
+                  angleleftradius = -pi/5,
+                  angleleftleg = 3*pi/2  + pi / 12 ,
+                  anglerightleg = 3*pi/2  - pi / 12,
+                  angleofneck = 3 * pi / 2 + pi/10)
+
+
+p + xkcdman(mapping,dataman) + theme_void()
+
+
+
+
+```
+
+
